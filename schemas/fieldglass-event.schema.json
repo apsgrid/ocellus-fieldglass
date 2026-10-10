@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ocellus.dev/schemas/fieldglass-event-1.json",
+  "title": "Ocellus Fieldglass Event",
+  "type": "object",
+  "required": ["schema", "event_id", "session_id", "sequence", "kind", "observer", "time", "privacy", "payload"],
+  "properties": {
+    "schema": { "const": "fieldglass.event/1.0" },
+    "event_id": { "type": "string", "minLength": 8 },
+    "session_id": { "type": "string", "minLength": 8 },
+    "sequence": { "type": "integer", "minimum": 0 },
+    "kind": {
+      "enum": ["session.start","session.end","system.status","gnss.fix","location.fix","wifi.ap","wifi.station","wifi.frame_summary","wifi.channel_metric","wifi.csi_ref","ble.advertisement","bt.discovery","artifact.ref","annotation"]
+    },
+    "observer": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string" },
+        "hardware": { "type": "string" },
+        "firmware": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "time": {
+      "type": "object",
+      "required": ["monotonic_ms","quality"],
+      "properties": {
+        "utc": { "type": ["string","null"], "format": "date-time" },
+        "monotonic_ms": { "type": "integer", "minimum": 0 },
+        "quality": { "enum": ["gnss","companion","network","rtc","estimated","unknown"] }
+      },
+      "additionalProperties": false
+    },
+    "location": {
+      "type": ["object","null"],
+      "properties": {
+        "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+        "lon": { "type": "number", "minimum": -180, "maximum": 180 },
+        "alt_m": { "type": ["number","null"] },
+        "accuracy_m": { "type": ["number","null"], "minimum": 0 },
+        "speed_mps": { "type": ["number","null"], "minimum": 0 },
+        "heading_deg": { "type": ["number","null"], "minimum": 0, "maximum": 360 },
+        "satellites": { "type": ["integer","null"], "minimum": 0 },
+        "hdop": { "type": ["number","null"], "minimum": 0 },
+        "source": { "enum": ["gnss","companion","host","manual","none"] }
+      },
+      "required": ["lat","lon","source"],
+      "additionalProperties": false
+    },
+    "signal": {
+      "type": ["object","null"],
+      "properties": {
+        "rssi_dbm": { "type": ["integer","null"] },
+        "noise_dbm": { "type": ["integer","null"] },
+        "channel": { "type": ["integer","null"], "minimum": 0 },
+        "frequency_mhz": { "type": ["integer","null"], "minimum": 0 },
+        "phy_mode": { "type": ["string","null"] },
+        "rate": { "type": ["number","null"] },
+        "mcs": { "type": ["integer","null"] },
+        "antenna": { "type": ["integer","null"] }
+      },
+      "additionalProperties": true
+    },
+    "privacy": {
+      "type": "object",
+      "required": ["mode","location"],
+      "properties": {
+        "mode": { "enum": ["raw","pseudonymised","redacted"] },
+        "location": { "enum": ["precise","fuzzed","suppressed"] },
+        "ssid_redacted": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "payload": { "type": "object" },
+    "provenance": { "type": "object" }
+  },
+  "additionalProperties": true
+}
