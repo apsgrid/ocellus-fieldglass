@@ -1,0 +1,30 @@
+.pio/
+.vscode/
+__pycache__/
+*.pyc
+
+# Field observations and recovery data are never source artifacts.
+captures/
+exports/
+private/
+recovered-*.jsonl
+littlefs-*.bin
+*walk*.bin
+*.pcap
+*.pcapng
+
+# Local build/debug artefacts.
+build-*.log
+*.o
+*.elf
+*.map
+
+# Android local/build output
+companion/android/.gradle/
+companion/android/app/build/
+companion/android/local.properties
+*.apk
+*.aab
+
+# Generated simulator output
+sim/sample-fieldglass.jsonl
