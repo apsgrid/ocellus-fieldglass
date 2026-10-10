@@ -1,0 +1,34 @@
+name: Feature request
+description: Suggest a Fieldglass capability or improvement
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What problem would this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behaviour
+    validations:
+      required: true
+  - type: dropdown
+    id: target
+    attributes:
+      label: Target
+      options:
+        - Current E32R40T hardware
+        - Android companion
+        - Host/export tooling
+        - Future hardware profile
+        - Documentation
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This request is compatible with the passive/authorised diagnostic scope of Fieldglass.
+          required: true
